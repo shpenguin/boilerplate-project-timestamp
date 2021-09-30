@@ -4,6 +4,7 @@
 // init project
 var express = require('express');
 var app = express();
+var stamp = require('./stamp');
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -18,12 +19,16 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api", function (req, res) {
+  let date = new Date();
+  res.json({ unix: +date, utc: date.toUTCString() });
 });
 
+app.get("/api/:date", function (req, res) {
+  let date = req.params.date;
+  res.json(stamp.format(date));
+});
 
 
 // listen for requests :)
